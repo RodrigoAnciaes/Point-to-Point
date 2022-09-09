@@ -1,0 +1,44 @@
+Inicia = True
+Envia Tipo1
+Sleep 5s
+Recebe Tipo2
+ok?
+if ok:
+    continue
+else:
+    restart?
+
+cont = 1
+
+
+while cont <= numPck:
+
+    envia t3
+    set timer1
+    set timer2
+
+    if recebeu t4: @if1
+        count++
+        volta pro começo do loop
+    
+    else:
+        if timer1 > 5 sec:
+            envia t3
+            reset timer1
+
+        if timer2 > 20 sec:
+            envia t5
+            encerra com1
+            =(
+        else:
+            if recebeu t6:
+                corrige count
+                envia t3
+                reset timer1
+                reset timer2
+                go to @if1
+            else:
+                go to @if1
+
+
+Secesso!!

@@ -38,3 +38,11 @@ head = [b'\x00',b'\x00',b'\x00',b'\x00',b'\x00']
 
 end = [b'\xFF',b'\xFF']
 
+tipo1head = [b'\x01',b'\x00',b'\x00',b'\x00',b'\x00'] #Cliente --> servidor Handshake, indentificador de server e quantidade de pacotes que prtendem ser enviados
+tipo2head = [b'\x02',b'\x00',b'\x00',b'\x00',b'\x00'] # Servidor --> cliente (servidor está pronto para receber pacotes
+tipo3head = [b'\x03',b'\x00',b'\x00',b'\x00',b'\x00'] # Cliente --> servidor (pacote de dados), com o indentificador de número de pacote em cada um
+tipo4head = [b'\x04',b'\x00',b'\x00',b'\x00',b'\x00'] # Servidor --> cliente Verificador (numero do pacote e tamanho do pacote)
+tipo5head = [b'\x05',b'\x00',b'\x00',b'\x00',b'\x00'] # Timeout
+tipo6head = [b'\x06',b'\x00',b'\x00',b'\x00',b'\x00'] # Erro no pacote
+
+
