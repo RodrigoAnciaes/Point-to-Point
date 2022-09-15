@@ -48,7 +48,7 @@ def main():
 
         handshake_client =  get_separeted_package(com1)
         print('dado recebido')
-        if handshake_client[0][1] == 255:
+        if handshake_client[0][0] == 255:
             print("Handshake recebido")
             print(handshake_client)
             my_handshake = create_package(handshake_head, b'\x00', end)
@@ -61,7 +61,7 @@ def main():
 
         pack_n = get_separeted_package(com1)
         print(pack_n)
-        n = pack_n[1][1]
+        n = pack_n[1][0]
         print(n)
         i = 0
 
@@ -73,9 +73,9 @@ def main():
             prosseguir = False
             while prosseguir == False:
                 com1.rx.clearBuffer()
-                print("Recebendo pacote {0}".format(i))
+                print("Recebendo pacote {0} de {1}".format(i, n))
                 package_received = get_separeted_package(com1)
-                numero_pacote = package_received[0][5]
+                numero_pacote = package_received[0][2]
                 print("Número do pacote recebido: {0}".format(numero_pacote))
 
                 if numero_pacote != i: #retorna um erro
@@ -96,7 +96,7 @@ def main():
                 print("Recebeu {} bytes, no body".format(nRx))
                 print("Recebeu {}".format(package_received))
                 print('------------------------DIVISA----------------------------')
-                lista_comandos = (rxBuffer.split(b'\xCC'))
+                lista_comandos = rxBuffer.split()
                 for command in lista_comandos:
                     if command != b'':
                         print(command)
@@ -110,16 +110,15 @@ def main():
                 print("Enviando o número de pacotes recebidos")
                 print("Enviando {}".format(nRx))
                 #head[1] = tamanho do payload
-                head[1] = [b'\x05']
+                head[1] = [b'\x04']
                 print("head1: {}".format(head[1]))
                 vpackage = create_package(head, [nRx], end)
                 send_package(com1, vpackage)
                 time.sleep(0.5)
                 print('-'*20)
                 print("Esperando confirmação para prosseguir")
-                confirmação = get_separeted_package(com1)
-                print("Confirmação recebida")
-                if confirmação[0][1] == 251:
+                confirmação = get_separeted_package(com1)                
+                if confirmação[0][0] == 251:
                     print("Confirmação recebida")
                     prosseguir = True
                     i += 1
