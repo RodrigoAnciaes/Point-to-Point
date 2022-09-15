@@ -44,5 +44,7 @@ tipo3head = [b'\x03',b'\x00',b'\x00',b'\x00',b'\x00'] # Cliente --> servidor (pa
 tipo4head = [b'\x04',b'\x00',b'\x00',b'\x00',b'\x00'] # Servidor --> cliente Verificador (numero do pacote e tamanho do pacote)
 tipo5head = [b'\x05',b'\x00',b'\x00',b'\x00',b'\x00'] # Timeout
 tipo6head = [b'\x06',b'\x00',b'\x00',b'\x00',b'\x00'] # Erro no pacote
+tipo7 = 'pacote recebido com sucesso'
+EOP = [b'\xAA',b'\xBB',b'\xCC',b'\xDD']
 
 

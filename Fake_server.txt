@@ -1,0 +1,57 @@
+
+ocioso = true
+
+Start
+if ocioso == true:
+
+    if recebeu t1:
+        if é_pra_mim = True:
+            ocioso = false
+
+    timer.sleep(1)
+    restart
+
+else:
+
+    envia t2
+    cont=1
+
+WHILE:
+
+    if count <= number of packages:
+        SUCESSO!
+        end
+
+    else:
+        set timer1
+        set timer2
+
+        @recebendo
+        
+        if t3 recebida: 
+            if ok:
+                envia t4
+                count++
+            else:
+                envia t6
+    
+            Volta pro começo do while
+
+        else:
+
+            sleep 1 Sec
+            if timer2 > 20 sec:
+                ocioso=true
+                envia t5
+                encerra com
+                =(
+            else:
+                if timer1 > 2 sec:
+                    envia t4
+                    reset timer1
+                    volta pra @recebendo
+
+
+
+
+
