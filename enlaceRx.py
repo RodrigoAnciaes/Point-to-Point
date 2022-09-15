@@ -69,22 +69,9 @@ class RX(object):
         return(b)
 
     def getNData(self, size):
-        t = 0
         while(self.getBufferLen() < size):
-            time.sleep(0.05)      
-            t += 0.05
-            #if while takes longer than 5 seconds, it will return an error
-            if(t>5):
-                print("Timeout")
-                user_input = input("Do you want to try again? (y/n): ")
-                if(user_input == "y"):
-                    t = 0
-                    print("Trying again...")
-                else:
-                    print("Exiting...")
-                    return exception("Timeout")
+            time.sleep(0.05)                 
         return(self.getBuffer(size))
-
 
     def clearBuffer(self):
         self.buffer = b""

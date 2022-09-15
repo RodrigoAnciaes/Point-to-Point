@@ -8,23 +8,20 @@ head = [b'\x00',b'\x00',b'\x00',b'\x00',b'\x00']
 
 end = [b'\xFF',b'\xFF']
 
-tipo1head = [b'\x01',b'\x00',b'\x00',b'\x00',b'\x00'] #Cliente --> servidor Handshake, indentificador de server e quantidade de pacotes que prtendem ser enviados
-tipo2head = [b'\x02',b'\x00',b'\x00',b'\x00',b'\x00'] # Servidor --> cliente (servidor está pronto para receber pacotes
-tipo3head = [b'\x03',b'\x00',b'\x00',b'\x00',b'\x00'] # Cliente --> servidor (pacote de dados), com o indentificador de número de pacote em cada um
-tipo4head = [b'\x04',b'\x00',b'\x00',b'\x00',b'\x00'] # Servidor --> cliente Verificador (numero do pacote e tamanho do pacote)
-tipo5head = [b'\x05',b'\x00',b'\x00',b'\x00',b'\x00'] # Timeout
-tipo6head = [b'\x06',b'\x00',b'\x00',b'\x00',b'\x00'] # Erro no pacote
-tipo7 = 'pacote recebido com sucesso'
+#tipo1head = [b'\x01',b'\x00',b'\x00',b'\x00',b'\x00'] #Cliente --> servidor Handshake, indentificador de server e quantidade de pacotes que prtendem ser enviados
+#tipo2head = [b'\x02',b'\x00',b'\x00',b'\x00',b'\x00'] # Servidor --> cliente (servidor está pronto para receber pacotes
+#tipo3head = [b'\x03',b'\x00',b'\x00',b'\x00',b'\x00'] # Cliente --> servidor (pacote de dados), com o indentificador de número de pacote em cada um
+#tipo4head = [b'\x04',b'\x00',b'\x00',b'\x00',b'\x00'] # Servidor --> cliente Verificador (numero do pacote e tamanho do pacote)
+#tipo5head = [b'\x05',b'\x00',b'\x00',b'\x00',b'\x00'] # Timeout
+#tipo6head = [b'\x06',b'\x00',b'\x00',b'\x00',b'\x00'] # Erro no pacote
+#tipo7 = 'pacote recebido com sucesso'
 EOP = [b'\xAA',b'\xBB',b'\xCC',b'\xDD']
 
 def create_package(head, comando, end):
     package = []
-    for i in head:
-        package.append(i)
-    for i in comando:
-        package.append(i)
-    for i in end:
-        package.append(i)
+    package.extend(head)
+    package.extend(comando)
+    package.extend(end)
     return package
 
 def send_package(com1, package):

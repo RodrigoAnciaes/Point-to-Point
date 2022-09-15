@@ -50,7 +50,6 @@ def main():
         print('dado recebido')
         if handshake_client[0][0] == 255:
             print("Handshake recebido")
-            print(handshake_client)
             my_handshake = create_package(handshake_head, b'\x00', end)
             send_package(com1, my_handshake)
             print("Handshake enviado")
@@ -104,7 +103,6 @@ def main():
                     time.sleep(.1)
 
                 time.sleep(1)
-                time.sleep(0.5)
                 #send a package with the number of received packages
                 
                 print("Enviando o número de pacotes recebidos")

@@ -8,8 +8,8 @@ from enlace import *
 import time
 import numpy as np
 from random import randint
-import signal
 from util import *
+from enlaceRx import *
 
 serialName = "COM4"
 
@@ -55,23 +55,21 @@ def main():
         time.sleep(1)
 
         print("Abriu a comunicação")
+        
+        RX.clearBuffer()
+        handshake_recebido = False
+        while not handshake_recebido:
+            handshake = create_package(handshake_head, b'\x00', end)
+            send_package(com1, handshake)
+            time.sleep(5)
 
-        #send a handshake to the server with 10 bytes on the head
-        handshake = create_package(handshake_head, b'\x00', end)
-        print("Handshake: {0}".format(handshake))
-        send_package(com1, handshake)
-
-        time.sleep(0.5)
-
-        response = get_separeted_package(com1)
-        time.sleep(0.2)
-
-        if response[0][0] == 255:
-            print("Handshake recebido")
-        else:
-            print("Handshake não recebido")
-            com1.disable()
-            exit()
+            if response[0][0] == 255 and RX.getIsEmpty == False:
+                response = get_separeted_package(com1)
+                print("Handshake recebido")
+                handshake_recebido = True
+                time.sleep(0.2)
+            else:
+                print("Handshake não recebido")
 
         #send a package with n as payload
         print("Enviando o tamanho")
