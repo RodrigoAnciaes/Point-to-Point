@@ -1,12 +1,12 @@
 import time
 import numpy as np
 
-handshake_head = [b'\xFF',b'\x04',b'\x00',b'\x00',b'\x00']
+handshake_head = [b'\x01',b'\x00',b'\x00',b'\x01',b'\x00',b'\x80', b'\x00', b'\x00', b'\x00', b'\x00']
 error_head = [b'\xFA',b'\x04',b'\x00',b'\x00',b'\x00']
 ok_head = [b'\xFB',b'\x04',b'\x00',b'\x00',b'\x00']
 head = [b'\x00',b'\x00',b'\x00',b'\x00',b'\x00']
 
-end = [b'\xFF',b'\xFF']
+end = [b'\xAA',b'\xBB',b'\xCC',b'\xDD']
 
 #tipo1head = [b'\x01',b'\x00',b'\x00',b'\x00',b'\x00'] #Cliente --> servidor Handshake, indentificador de server e quantidade de pacotes que prtendem ser enviados
 #tipo2head = [b'\x02',b'\x00',b'\x00',b'\x00',b'\x00'] # Servidor --> cliente (servidor está pronto para receber pacotes
@@ -30,10 +30,12 @@ def send_package(com1, package):
         time.sleep(.05)
 
 def get_separeted_package(com1): 
-    head, nh = com1.getData(5)
-    body_size = head[1] # No client foi definido que o tamanho do body é o 4º byte do head (adicionado os \xCC). Nessa linha ainda existe um erro ao receber o tamanho do body
+    head, nh = com1.getData(10)
+    body_size = head[5] # No client foi definido que o tamanho do body é o 4º byte do head (adicionado os \xCC). Nessa linha ainda existe um erro ao receber o tamanho do body
+    if head[0] == b'\x01':
+        body_size = 1
     body, nb = com1.getData(body_size)
-    end, ne = com1.getData(2)
+    end, ne = com1.getData(4)
     return [head, body, end, nh, nb, ne]
 
 def tamanho_real(size):

@@ -11,7 +11,7 @@ from random import randint
 from util import *
 from enlaceRx import *
 
-serialName = "COM4"
+serialName = "COM5"
 
 COMANDOS = [b'\x00\xFA\x00\x00', #1
             b'\x00\x00\xFA\x00', #2
@@ -49,39 +49,41 @@ def main():
     try:
         com1 = enlace(serialName)
         com1.enable()
-
-        time.sleep(.2)
-        com1.sendData(b'00')
         time.sleep(1)
-
         print("Abriu a comunicação")
         
-        RX.clearBuffer()
+        com1.rx.clearBuffer()
         handshake_recebido = False
         while not handshake_recebido:
+            com1.sendData(b'00')
+            time.sleep(0.1)
             handshake = create_package(handshake_head, b'\x00', end)
+            handshake[5] = 128
+            print("handshake: {0}".format(handshake))
             send_package(com1, handshake)
             time.sleep(5)
 
-            if response[0][0] == 255 and RX.getIsEmpty == False:
+            if com1.rx.getIsEmpty() == False:
                 response = get_separeted_package(com1)
-                print("Handshake recebido")
-                handshake_recebido = True
+                if response[0][0] == 255:
+                    print("Handshake recebido")
+                    handshake_recebido = True
                 time.sleep(0.2)
             else:
                 print("Handshake não recebido")
+                com1.rx.clearBuffer()
 
         #send a package with n as payload
         print("Enviando o tamanho")
-        head[1] = [b'\x04']
+        head[5] = [b'\x04']
         package = create_package(head,[n], end)
         print("Package: {0}".format(package))
         send_package(com1, package)
         time.sleep(0.1)
 
-        numero_pacote = 0
+        cont = 1
         for i in lista_listas:
-            print("Enviando pacote {0}".format(numero_pacote))
+            print("Enviando pacote {0}".format(cont))
             pacote_enviado_com_sucesso = False
             numero_certo = False
             tamanho_certo = False
@@ -91,8 +93,8 @@ def main():
                 for c in i:
                     total_size += len(c)
                 #send the command to the server
-                head[1] = tamanho_real(total_size).to_bytes(1, byteorder='little')
-                head[2] = numero_pacote.to_bytes(1, byteorder='little')
+                head[5] = tamanho_real(total_size).to_bytes(1, byteorder='little')
+                head[4] = cont.to_bytes(1, byteorder='little')
                 #time.sleep(.1)
                 print(i)
                 package = create_package(head, i, end)
@@ -139,16 +141,15 @@ def main():
                     send_package(com1, ok_package)
                     tamanho_certo = True
                 time.sleep(0.2)
-                print("numero do pacote cuja operação foi realizada",numero_pacote)
+                print("numero do pacote cuja operação foi realizada",cont)
                 print("☺"*100)
                 print(numero_certo, tamanho_certo)
                 if numero_certo == True and tamanho_certo == True:
                     pacote_enviado_com_sucesso = True
-                    numero_pacote += 1
+                    cont += 1
                 else:
                     pacote_enviado_com_sucesso = False
             
-        
         print("Fechando a comunicação")
         com1.disable()
 
