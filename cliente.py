@@ -103,7 +103,7 @@ def main():
 
                 #get the response from the server
                 response = get_separeted_package(com1)
-                print("Recebeu a resposta")
+                print("Recebeu a resposta: {0}".format(response))
                 if response[0][0] == 251:
                     print("tudo certo")
                     numero_certo = True
