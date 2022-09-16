@@ -51,21 +51,20 @@ def main():
         com1.enable()
         time.sleep(1)
         print("Abriu a comunicação")
+        com1.sendData(b'00')
+        time.sleep(0.1)
         
         com1.rx.clearBuffer()
         handshake_recebido = False
         while not handshake_recebido:
-            com1.sendData(b'00')
-            time.sleep(0.1)
             handshake = create_package(handshake_head, b'\x00', end)
-            handshake[5] = 128
-            print("handshake: {0}".format(handshake))
             send_package(com1, handshake)
             time.sleep(5)
 
             if com1.rx.getIsEmpty() == False:
                 response = get_separeted_package(com1)
-                if response[0][0] == 255:
+                print("response: ",response)
+                if response[0][0] == 2:
                     print("Handshake recebido")
                     handshake_recebido = True
                 time.sleep(0.2)
@@ -95,7 +94,7 @@ def main():
                 #send the command to the server
                 head[5] = tamanho_real(total_size).to_bytes(1, byteorder='little')
                 head[4] = cont.to_bytes(1, byteorder='little')
-                #time.sleep(.1)
+                time.sleep(.1)
                 print(i)
                 package = create_package(head, i, end)
                 print(package)
