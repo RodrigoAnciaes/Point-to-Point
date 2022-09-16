@@ -36,45 +36,52 @@ def main():
     
         # Ativa comunicacao. Inicia os threads e a comunicação seiral 
         com1.enable()
-
-        print("esperando 1 byte de sacrifício")
         rxBuffer, nRx = com1.getData(1)
         com1.rx.clearBuffer()
         time.sleep(.1)
-        #Se chegamos até aqui, a comunicação foi aberta com sucesso. Faça um print para informar.
-        print("Abriu a comunicação")
-    
-        #txBuffer = b'\xFA'  #isso é um array de bytes
 
-        handshake_client =  get_separeted_package(com1)
-        print('dado recebido')
-        if handshake_client[0][0] == 255:
-            print("Handshake recebido")
-            my_handshake = create_package(handshake_head, b'\x00', end)
-            send_package(com1, my_handshake)
-            print("Handshake enviado")
-        else:
-            print("Handshake não recebido")
-            com1.disable()
-            exit()
+        ocioso = True
+        while ocioso:
+            print("esperando 1 byte de sacrifício")
+            #Se chegamos até aqui, a comunicação foi aberta com sucesso. Faça um print para informar.
+            print("Abriu a comunicação")
+        
+            #txBuffer = b'\xFA'  #isso é um array de bytes
+            if com1.rx.getIsEmpty() == False:  
+                handshake_client =  get_separeted_package(com1)
+                print(handshake_client)
+                print('dado recebido')
+                if handshake_client[0][0] == 1:
+                    print("Handshake recebido")
+                    if handshake_client[0][5] == codigo_server: #É para mim?
+                        ocioso = False
+                        handshake_head[0] = [b'\x02']
+                        my_handshake = create_package(handshake_head, b'\x00', end)
+                        send_package(com1, my_handshake)
+                        print("Handshake enviado")
+                else:
+                    print("Handshake não recebido")
+
+            time.sleep(1)
+
 
         pack_n = get_separeted_package(com1)
         print(pack_n)
         n = pack_n[1][0]
         print(n)
-        i = 0
+        i = 1
 
         comandos_recebidos = []
-        numero_anterior = -1
+        numero_anterior = 0
 
 
-        while i < n:
+        while i <= n:
             prosseguir = False
             while prosseguir == False:
                 com1.rx.clearBuffer()
                 print("Recebendo pacote {0} de {1}".format(i, n))
                 package_received = get_separeted_package(com1)
-                numero_pacote = package_received[0][2]
+                numero_pacote = package_received[0][4]
                 print("Número do pacote recebido: {0}".format(numero_pacote))
 
                 if numero_pacote != i: #retorna um erro
@@ -87,6 +94,7 @@ def main():
                     print("Pacote certo recebido")
                     print("Enviando pacote enviando pacote com o numero para o cliente".format(numero_pacote))
                     ok_package = create_package(ok_head, b'\x00', end)
+                    print("ok:",ok_package)
                     send_package(com1, ok_package)
 
                 rxBuffer = package_received[1]
@@ -108,9 +116,10 @@ def main():
                 print("Enviando o número de pacotes recebidos")
                 print("Enviando {}".format(nRx))
                 #head[1] = tamanho do payload
-                head[1] = [b'\x04']
-                print("head1: {}".format(head[1]))
+                head[5] = [b'\x04']
+                print("head1: {}".format(head[5]))
                 vpackage = create_package(head, [nRx], end)
+                print("vpackage: {}".format(vpackage))
                 send_package(com1, vpackage)
                 time.sleep(0.5)
                 print('-'*20)
