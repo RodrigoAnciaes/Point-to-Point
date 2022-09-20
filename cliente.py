@@ -53,7 +53,7 @@ def main():
         print("Abriu a comunicação")
         com1.sendData(b'00')
         time.sleep(0.1)
-        
+        handshake_head[3] = n.to_bytes(1, byteorder='big')
         com1.rx.clearBuffer()
         handshake_recebido = False
         while not handshake_recebido:
@@ -73,53 +73,77 @@ def main():
                 com1.rx.clearBuffer()
 
         #send a package with n as payload
-        print("Enviando o tamanho")
-        head[5] = [b'\x04']
-        package = create_package(head,[n], end)
-        print("Package: {0}".format(package))
-        send_package(com1, package)
-        time.sleep(0.1)
+        #print("Enviando o tamanho")
+        #head[5] = [b'\x04']
+        #package = create_package(head,[n], end)
+        #print("Package: {0}".format(package))
+        #send_package(com1, package)
+        #time.sleep(0.1)
 
         cont = 1
         for i in lista_listas:
             print("Enviando pacote {0}".format(cont))
+            total_size = 0
+            for c in i:
+                total_size += len(c)
+            #send the command to the server
+            head[5] = (total_size).to_bytes(1, byteorder='little')
+            head[4] = cont.to_bytes(1, byteorder='little')
+
             pacote_enviado_com_sucesso = False
             numero_certo = False
             tamanho_certo = False
             while pacote_enviado_com_sucesso == False:
                 print("Enviando comando")
-                total_size = 0
-                for c in i:
-                    total_size += len(c)
-                #send the command to the server
-                head[5] = tamanho_real(total_size).to_bytes(1, byteorder='little')
-                head[4] = cont.to_bytes(1, byteorder='little')
                 time.sleep(.1)
                 print(i)
                 package = create_package(head, i, end)
                 print(package)
                 send_package(com1, package)
+                timer1 = time.time() #timer de reenvio 
+                timer2 = time.time() #timer timeout
                 print("Enviou os dados")
 
-                #get the response from the server
-                response = get_separeted_package(com1)
+                response = get_separeted_package(com1) #ESSA DEVE SER A MSG T4 
                 print("Recebeu a resposta: {0}".format(response))
-                if response[0][0] == 251:
+                if response[0][0] == 251: #DEVE SER USADO PARA CONFIRMAR SE O PACOTE FOI RECEBIDO COM SUCESSO
                     print("tudo certo")
+                    print("response: ",response)
                     numero_certo = True
                 else:
                     print("numero errado")
                     print(response[0])
-                    print(response[0][0])
                     numero_certo = False
                 
-
                 #com1.sendData(np.asarray(txBuffer))  
-                while com1.tx.getStatus() == 0:
-                    txSize = com1.tx.getStatus() 
-                
+                #while com1.tx.getStatus() == 0:
+                #    txSize = com1.tx.getStatus() 
+        
                 time.sleep(.1)
-                
+                #LOOP PARA TRATAR ERROS 
+                while numero_certo == False:
+                    if time.time() - timer1 > 5:
+                        print("Enviando comando novamente")
+                        time.sleep(.1)
+                        print(i)
+                        package = create_package(head, i, end)
+                        print(package)
+                        send_package(com1, package)
+                        timer1 = time.time()
+                    if time.time() - timer2 > 20:
+                        #ENVIA MSG T5
+                        print("Timeout :-(")
+                        com1.disable()
+                        break
+                    if com1.rx.getIsEmpty() == False:
+                        response1 = get_separeted_package(com1)
+                    if response1[0][0] == 6:
+                        package = create_package(head, i, end)
+                        send_package(com1, package)
+                        timer1 = time.time() 
+                        timer2 = time.time()
+                        
+                #IMPLEMENTANDO CORRETAMENTE AS MSGS T4 E T6 ESSA PARTE FINAL NÃO SERÁ MAIS NECESSÁRIA
                 print("ENVIADOS {} bytes, {}".format(total_size, hex(total_size)))
                 print(f"TAMANHO LEN COMANDOS: {len(i)}")
                 print(f"Lista bytes: {i}")
@@ -130,7 +154,7 @@ def main():
                 print("Recebeu {} bytes".format(ttotal))
                 print("Recebido: {} bytes".format(int.from_bytes(ttotal, byteorder='big')))
 
-                if int.from_bytes(ttotal, byteorder='big') != tamanho_real(total_size):
+                if int.from_bytes(ttotal, byteorder='big') != (total_size):
                     print("O número de bytes recebidos não é igual ao número de bytes enviados")
                     erro_package = create_package(error_head, b'\x00', end)
                     send_package(com1, erro_package)

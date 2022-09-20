@@ -38,7 +38,6 @@ def main():
         com1.enable()
         rxBuffer, nRx = com1.getData(1)
         com1.rx.clearBuffer()
-        time.sleep(.1)
 
         ocioso = True
         while ocioso:
@@ -50,6 +49,7 @@ def main():
             if com1.rx.getIsEmpty() == False:  
                 handshake_client =  get_separeted_package(com1)
                 print(handshake_client)
+                novo_n = handshake_client[0][3]
                 print('dado recebido')
                 if handshake_client[0][0] == 1:
                     print("Handshake recebido")
@@ -65,21 +65,20 @@ def main():
             time.sleep(1)
 
 
-        pack_n = get_separeted_package(com1)
-        print(pack_n)
-        n = pack_n[1][0]
-        print(n)
+        #pack_n = get_separeted_package(com1)
+        #print(pack_n)
+        #n = pack_n[1][0]
+        #print(n)
+        #print("novo n recebido: ", novo_n)
+
         i = 1
-
         comandos_recebidos = []
-        numero_anterior = 0
 
-
-        while i <= n:
+        while i <= novo_n:
             prosseguir = False
             while prosseguir == False:
                 com1.rx.clearBuffer()
-                print("Recebendo pacote {0} de {1}".format(i, n))
+                print("Recebendo pacote {0} de {1}".format(i, novo_n))
                 package_received = get_separeted_package(com1)
                 numero_pacote = package_received[0][4]
                 print("Número do pacote recebido: {0}".format(numero_pacote))
