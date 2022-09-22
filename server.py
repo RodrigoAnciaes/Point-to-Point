@@ -83,11 +83,28 @@ def main():
                 com1.rx.clearBuffer()
                 timer1 = time.time()
                 timer2 = time.time()
-
-
-
                 print("Recebendo pacote {0} de {1}".format(i, novo_n))
-                package_received = get_separeted_package(com1)
+                recebido_com_sucesso = False
+                while recebido_com_sucesso == False:
+                    if com1.rx.getIsEmpty() == False:
+                        package_received = get_separeted_package(com1)
+                        recebido_com_sucesso = True
+                    else: #Loop de erro
+                        time.sleep(1)
+                        if time.time() - timer2> 20:
+                            ocioso = True
+                            #envia t5
+                            print(":-(")
+                            com1.disable()
+                        if time.time() - timer1 > 2:
+                            ok_head[5] = [b'\x04']
+                            ok_head[6] = (i).to_bytes(1, byteorder='little')
+                            ok_head[7] = (i-1).to_bytes(1, byteorder='little')
+                            ok_package = create_package(ok_head, b'\x00', end)
+                            print("ok:",ok_package)
+                            send_package(com1, ok_package)
+                            timer1 = time.time()
+
                 time.sleep(0.1)
                 numero_pacote = package_received[0][4]
                 print("Número do pacote recebido: {0}".format(numero_pacote))

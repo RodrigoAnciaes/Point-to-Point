@@ -50,7 +50,6 @@ def main():
         com1 = enlace(serialName)
         com1.enable()
         time.sleep(1)
-        print("Abriu a comunicação")
         com1.sendData(b'00')
         time.sleep(0.1)
         handshake_head[3] = n.to_bytes(1, byteorder='big')
@@ -71,14 +70,6 @@ def main():
             else:
                 print("Handshake não recebido")
                 com1.rx.clearBuffer()
-
-        #send a package with n as payload
-        #print("Enviando o tamanho")
-        #head[5] = [b'\x04']
-        #package = create_package(head,[n], end)
-        #print("Package: {0}".format(package))
-        #send_package(com1, package)
-        #time.sleep(0.1)
 
         cont = 1
         for i in lista_listas:
