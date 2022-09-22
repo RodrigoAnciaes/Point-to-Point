@@ -65,7 +65,7 @@ def main():
                 response = get_separeted_package(com1)
                 print("response: ",response)
                 if response[0][0] == 2:
-                    print("Handshake recebido")
+                    print("Handshake recebido\n\n")
                     handshake_recebido = True
                 time.sleep(0.2)
             else:
@@ -87,12 +87,13 @@ def main():
             for c in i:
                 total_size += len(c)
             #send the command to the server
-            head[5] = (total_size).to_bytes(1, byteorder='little')
+            head[5] = total_size.to_bytes(1, byteorder='little')
             head[4] = cont.to_bytes(1, byteorder='little')
+            head[3] = n.to_bytes(1, byteorder='big')
 
             pacote_enviado_com_sucesso = False
             numero_certo = False
-            tamanho_certo = False
+            #tamanho_certo = False
             while pacote_enviado_com_sucesso == False:
                 print("Enviando comando")
                 time.sleep(.1)
@@ -106,22 +107,22 @@ def main():
 
                 response = get_separeted_package(com1) #ESSA DEVE SER A MSG T4 
                 print("Recebeu a resposta: {0}".format(response))
-                if response[0][0] == 251: #DEVE SER USADO PARA CONFIRMAR SE O PACOTE FOI RECEBIDO COM SUCESSO
+                if response[0][0] == 4: #DEVE SER USADO PARA CONFIRMAR SE O PACOTE FOI RECEBIDO COM SUCESSO
                     print("tudo certo")
                     print("response: ",response)
+                    pacote_enviado_com_sucesso = True
                     numero_certo = True
-                else:
+                elif response[0][0] == 6:
                     print("numero errado")
                     print(response[0])
                     numero_certo = False
-                
-                #com1.sendData(np.asarray(txBuffer))  
-                #while com1.tx.getStatus() == 0:
-                #    txSize = com1.tx.getStatus() 
+                else:
+                    print("?????????????????")
         
-                time.sleep(.1)
+                time.sleep(.2)
                 #LOOP PARA TRATAR ERROS 
                 while numero_certo == False:
+                    
                     if time.time() - timer1 > 5:
                         print("Enviando comando novamente")
                         time.sleep(.1)
@@ -143,35 +144,7 @@ def main():
                         timer1 = time.time() 
                         timer2 = time.time()
                         
-                #IMPLEMENTANDO CORRETAMENTE AS MSGS T4 E T6 ESSA PARTE FINAL NÃO SERÁ MAIS NECESSÁRIA
-                print("ENVIADOS {} bytes, {}".format(total_size, hex(total_size)))
-                print(f"TAMANHO LEN COMANDOS: {len(i)}")
-                print(f"Lista bytes: {i}")
-
-                verification = get_separeted_package(com1)
-                ttotal = verification[1].strip(b'\x00\x00\x00')
-                print("verificação recebida: {0}".format(verification))
-                print("Recebeu {} bytes".format(ttotal))
-                print("Recebido: {} bytes".format(int.from_bytes(ttotal, byteorder='big')))
-
-                if int.from_bytes(ttotal, byteorder='big') != (total_size):
-                    print("O número de bytes recebidos não é igual ao número de bytes enviados")
-                    erro_package = create_package(error_head, b'\x00', end)
-                    send_package(com1, erro_package)
-                else:
-                    print("O número de bytes recebidos é igual ao número de bytes enviados")
-                    ok_package = create_package(ok_head, b'\x00', end)
-                    send_package(com1, ok_package)
-                    tamanho_certo = True
-                time.sleep(0.2)
-                print("numero do pacote cuja operação foi realizada",cont)
-                print("☺"*100)
-                print(numero_certo, tamanho_certo)
-                if numero_certo == True and tamanho_certo == True:
-                    pacote_enviado_com_sucesso = True
-                    cont += 1
-                else:
-                    pacote_enviado_com_sucesso = False
+                cont += 1
             
         print("Fechando a comunicação")
         com1.disable()
