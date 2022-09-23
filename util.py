@@ -29,9 +29,7 @@ def send_package(com1, package):
 def get_separeted_package(com1): 
     head, nh = com1.getData(10)
     body_size = head[5] 
-    if head[0] == 1 or head[0] == 2:
-        body_size = 4
-    elif head[0] == 4:
+    if head[0] == 1 or head[0] == 2 or head[0] == 4 or head[0] == 5:
         body_size = 4
     body, nb = com1.getData(body_size)
     end, ne = com1.getData(4)

@@ -11,7 +11,7 @@ from random import randint
 from util import *
 from enlaceRx import *
 
-serialName = "COM5"
+serialName = "COM4"
 
 COMANDOS = [b'\x00\xFA\x00\x00', #1
             b'\x00\x00\xFA\x00', #2
@@ -74,43 +74,44 @@ def main():
         cont = 1
         for i in lista_listas:
             print("Enviando pacote {0}".format(cont))
-            total_size = 0
-            for c in i:
-                total_size += len(c)
-            #send the command to the server
-            head[5] = total_size.to_bytes(1, byteorder='little')
-            head[4] = cont.to_bytes(1, byteorder='little')
-            head[3] = n.to_bytes(1, byteorder='big')
-
+            
+            response = [[]]
             pacote_enviado_com_sucesso = False
             numero_certo = False
-            #tamanho_certo = False
             while pacote_enviado_com_sucesso == False:
                 print("Enviando comando")
                 time.sleep(.1)
-                print(i)
+                total_size = 0
+                for c in i:
+                    total_size += len(c)
+                head[5] = total_size.to_bytes(1, byteorder='little')
+                head[4] = cont.to_bytes(1, byteorder='little')
+                head[3] = n.to_bytes(1, byteorder='big')
+                head[0] = b"\x03"
                 package = create_package(head, i, end)
                 print(package)
                 send_package(com1, package)
                 timer1 = time.time() #timer de reenvio 
                 timer2 = time.time() #timer timeout
                 print("Enviou os dados")
+                time.sleep(0.2)
 
-                response = get_separeted_package(com1) #ESSA DEVE SER A MSG T4 
-                print("Recebeu a resposta: {0}".format(response))
-                if response[0][0] == 4: #DEVE SER USADO PARA CONFIRMAR SE O PACOTE FOI RECEBIDO COM SUCESSO
-                    print("tudo certo")
-                    print("response: ",response)
-                    pacote_enviado_com_sucesso = True
-                    numero_certo = True
-                elif response[0][0] == 6:
-                    print("numero errado")
-                    print(response[0])
-                    numero_certo = False
+                if com1.rx.getIsEmpty() == False:
+                    response = get_separeted_package(com1) #ESSA DEVE SER A MSG T4 
+                    print("Recebeu a resposta: {0}".format(response))
+                    if response[0][0] == 4: #DEVE SER USADO PARA CONFIRMAR SE O PACOTE FOI RECEBIDO COM SUCESSO
+                        print("tudo certo")
+                        print("response: ",response)
+                        pacote_enviado_com_sucesso = True
+                        numero_certo = True
+                    elif response[0][0] == 6:
+                        print("numero errado")
+                        print(response[0])
+                        numero_certo = False
                 else:
-                    print("?????????????????")
+                    print("????????????????? Não recebeu a resposta")
         
-                time.sleep(.2)
+                time.sleep(.5)
                 #LOOP PARA TRATAR ERROS 
                 while numero_certo == False:
                     
@@ -124,18 +125,23 @@ def main():
                         timer1 = time.time()
                     if time.time() - timer2 > 20:
                         #ENVIA MSG T5
+                        head[0] = b"\x05"
+                        package = create_package(head, b'\x00', end)
+                        send_package(com1, package)
                         print("Timeout :-(")
                         com1.disable()
                         break
                     if com1.rx.getIsEmpty() == False:
                         response1 = get_separeted_package(com1)
                     if response1[0][0] == 6:
+                        print("numero errado1")
                         package = create_package(head, i, end)
                         send_package(com1, package)
                         timer1 = time.time() 
                         timer2 = time.time()
                         
                 cont += 1
+                time.sleep(0.4)
             
         print("Fechando a comunicação")
         com1.disable()

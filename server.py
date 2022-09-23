@@ -42,9 +42,8 @@ def main():
 
         ocioso = True
         while ocioso:
-            print("esperando 1 byte de sacrifício")
             #Se chegamos até aqui, a comunicação foi aberta com sucesso. Faça um print para informar.
-            print("Abriu a comunicação")
+            print("Esperando handshake")
         
             #txBuffer = b'\xFA'  #isso é um array de bytes
             if com1.rx.getIsEmpty() == False:  
@@ -67,13 +66,6 @@ def main():
 
             time.sleep(1)
 
-
-        #pack_n = get_separeted_package(com1)
-        #print(pack_n)
-        #n = pack_n[1][0]
-        #print(n)
-        #print("novo n recebido: ", novo_n)
-
         i = 1
         comandos_recebidos = []
 
@@ -85,15 +77,22 @@ def main():
                 timer2 = time.time()
                 print("Recebendo pacote {0} de {1}".format(i, novo_n))
                 recebido_com_sucesso = False
+
                 while recebido_com_sucesso == False:
+                    print("loop")
+                    time.sleep(0.5)
                     if com1.rx.getIsEmpty() == False:
+                        print("recebendo")
                         package_received = get_separeted_package(com1)
+                        print(package_received, "pacote recebido")
                         recebido_com_sucesso = True
                     else: #Loop de erro
-                        time.sleep(1)
+                        time.sleep(.1)
                         if time.time() - timer2> 20:
                             ocioso = True
-                            #envia t5
+                            head[0] = b"\x05"
+                            package = create_package(head, b'\x00', end)
+                            send_package(com1, package)
                             print(":-(")
                             com1.disable()
                         if time.time() - timer1 > 2:
@@ -105,7 +104,6 @@ def main():
                             send_package(com1, ok_package)
                             timer1 = time.time()
 
-                time.sleep(0.1)
                 numero_pacote = package_received[0][4]
                 print("Número do pacote recebido: {0}".format(numero_pacote))
                 tamanho_pacote = package_received[0][5]
@@ -124,58 +122,19 @@ def main():
                     time.sleep(0.1)
                 else:
                     print("Pacote certo recebido")
+                    comandos_recebidos.append(package_received[1])
+                    comandos_recebidos.append("\n")
                     print("Enviando pacote enviando pacote com o numero para o cliente".format(numero_pacote))
                     ok_head[5] = [b'\x04']
                     ok_head[6] = (i).to_bytes(1, byteorder='little')
-                    ok_head[7] = (i-1).to_bytes(1, byteorder='little')
+                    ok_head[7] = (i).to_bytes(1, byteorder='little')
                     ok_package = create_package(ok_head, b'\x00', end)
                     print("ok:",ok_package)
                     send_package(com1, ok_package)
-                    time.sleep(0.1)
                     prosseguir = True
                     i += 1
 
 
-#
-                ##rxBuffer = package_received[1]
-                ##nRx = package_received[4]
-                ##time.sleep(.1)
-                ##print("Recebeu {} bytes, no body".format(nRx))
-                #print("Recebeu {}".format(package_received))
-                #print('------------------------DIVISA----------------------------')
-                #lista_comandos = rxBuffer.split()
-                #for command in lista_comandos:
-                #    if command != b'':
-                #        print(command)
-                #        comandos_recebidos.append(command)
-                #    time.sleep(.1)
-#
-                #time.sleep(1)
-                ##send a package with the number of received packages
-                #
-                #print("Enviando o número de pacotes recebidos")
-                #print("Enviando {}".format(nRx))
-                ##head[1] = tamanho do payload
-                #head[5] = [b'\x04']
-                #print("head1: {}".format(head[5]))
-                #vpackage = create_package(head, [nRx], end)
-                #print("vpackage: {}".format(vpackage))
-                #send_package(com1, vpackage)
-                #time.sleep(0.5)
-                #print('-'*20)
-                #print("Esperando confirmação para prosseguir")
-                #confirmação = get_separeted_package(com1)                
-                #if confirmação[0][0] == 4:
-                #    print("Confirmação recebida")
-                #    prosseguir = True
-                #    i += 1
-                #else:
-                #    prosseguir = False
-#
-        #
-#
-    #
-        # Encerra comunicação
         print("-------------------------")
         print("Comunicação encerrada")
         print("-------------------------")
