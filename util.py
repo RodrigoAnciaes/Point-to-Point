@@ -1,9 +1,7 @@
 import time
-from turtle import pen
 import numpy as np
 
 handshake_head = [b'\x01',b'\x00',b'\x00',b'\x00',b'\x00',b'\x80', b'\x00', b'\x00', b'\x00', b'\x00']
-head3 = [b'\x02',b'\x00',b'\x00',b'\x00',b'\x00', b'\x00',b'\x00',b'\x00',b'\x00',b'\x00']
 error_head = [b'\x06',b'\x04',b'\x00',b'\x00',b'\x00', b'\x04',b'\x00',b'\x00',b'\x00',b'\x00']
 ok_head = [b'\x04',b'\x04',b'\x00',b'\x00',b'\x00', b'\x04',b'\x00',b'\x00',b'\x00',b'\x00']
 head = [b'\x00',b'\x00',b'\x00',b'\x00',b'\x00', b'\x00',b'\x00',b'\x00',b'\x00',b'\x00']
@@ -41,3 +39,10 @@ def get_separeted_package(com1):
 def split_In_lists(a, n):
     k, m = divmod(len(a), n)
     return (a[i*k+min(i, m):(i+1)*k+min(i+1, m)] for i in range(n))
+
+def write_file(file_name, data):
+    with open(file_name, 'a') as f:
+        f.write(str(time.asctime(time.localtime(time.time()))) + ': ')
+        for d in data:
+            f.write(str(d))
+        f.write('\n')
