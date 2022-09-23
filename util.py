@@ -1,9 +1,7 @@
 import time
-from turtle import pen
 import numpy as np
 
 handshake_head = [b'\x01',b'\x00',b'\x00',b'\x00',b'\x00',b'\x80', b'\x00', b'\x00', b'\x00', b'\x00']
-head3 = [b'\x02',b'\x00',b'\x00',b'\x00',b'\x00', b'\x00',b'\x00',b'\x00',b'\x00',b'\x00']
 error_head = [b'\x06',b'\x04',b'\x00',b'\x00',b'\x00', b'\x04',b'\x00',b'\x00',b'\x00',b'\x00']
 ok_head = [b'\x04',b'\x04',b'\x00',b'\x00',b'\x00', b'\x04',b'\x00',b'\x00',b'\x00',b'\x00']
 head = [b'\x00',b'\x00',b'\x00',b'\x00',b'\x00', b'\x00',b'\x00',b'\x00',b'\x00',b'\x00']
@@ -34,9 +32,6 @@ def get_separeted_package(com1):
     body, nb = com1.getData(body_size)
     end, ne = com1.getData(4)
     return [head, body, end, nh, nb, ne]
-
-#def tamanho_real(size):
-#    return size  #Utlizado para resolver um bug que acontecia em certas ocasioes
 
 def split_In_lists(a, n):
     k, m = divmod(len(a), n)
