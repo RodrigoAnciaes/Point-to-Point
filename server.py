@@ -30,6 +30,7 @@ serialName = "COM5"                  # Windows(variacao de)
 def main():
     try:
         print("Iniciou o main")
+        write_file("log.txt", "Iniciou o main")
         #declaramos um objeto do tipo enlace com o nome "com". Essa é a camada inferior à aplicação. Observe que um parametro
         #para declarar esse objeto é o nome da porta.
         com1 = enlace(serialName)
@@ -44,15 +45,17 @@ def main():
         while ocioso:
             #Se chegamos até aqui, a comunicação foi aberta com sucesso. Faça um print para informar.
             print("Esperando handshake")
+            write_file("log.txt", "Esperando handshake")
         
             if com1.rx.getIsEmpty() == False:  
                 handshake_client =  get_separeted_package(com1)
                 time.sleep(0.1)
-                print(handshake_client)
                 novo_n = handshake_client[0][3]
                 print('dado recebido')
+                write_file("log.txt", "dado recebido")
                 if handshake_client[0][0] == 1:
                     print("Handshake recebido")
+                    write_file("log.txt", "Handshake recebido")
                     if handshake_client[0][5] == codigo_server: #É para mim?
                         ocioso = False
                         handshake_head[0] = [b'\x02']
@@ -60,8 +63,11 @@ def main():
                         send_package(com1, my_handshake)
                         time.sleep(0.1)
                         print("Handshake enviado")
+                        write_file("log.txt", "Handshake enviado")
                 else:
                     print("Handshake não recebido")
+                    write_file("log.txt", "Handshake não recebido")
+                    com1.rx.clearBuffer()
 
             time.sleep(1)
 
@@ -75,14 +81,13 @@ def main():
                 timer1 = time.time()
                 timer2 = time.time()
                 print("Recebendo pacote {0} de {1}".format(i, novo_n))
+                write_file("log.txt", "Recebendo pacote {0} de {1}".format(i, novo_n))
                 recebido_com_sucesso = False
 
                 while recebido_com_sucesso == False:
                     time.sleep(0.4)
                     if com1.rx.getIsEmpty() == False:
-                        print("recebendo")
                         package_received = get_separeted_package(com1)
-                        print(package_received, "pacote recebido")
                         recebido_com_sucesso = True
                     else: #Loop de erro
                         time.sleep(.1)
@@ -92,6 +97,7 @@ def main():
                             package = create_package(head, b'\x00', end)
                             send_package(com1, package)
                             print(":-(")
+                            write_file("log.txt", ":-(")
                             com1.disable()
                             exit()
                         if time.time() - timer1 > 2:
@@ -99,20 +105,22 @@ def main():
                             ok_head[6] = (i).to_bytes(1, byteorder='little')
                             ok_head[7] = (i-1).to_bytes(1, byteorder='little')
                             ok_package = create_package(ok_head, b'\x00', end)
-                            print("ok:",ok_package)
                             send_package(com1, ok_package)
                             timer1 = time.time()
 
                 numero_pacote = package_received[0][4]
                 print("Número do pacote recebido: {0}".format(numero_pacote))
+                write_file("log.txt", "Número do pacote recebido: {0}".format(numero_pacote))
                 tamanho_pacote = package_received[0][5]
                 print("Tamanho do pacote recebido: {0}".format(tamanho_pacote))
+                write_file("log.txt", "Tamanho do pacote recebido: {0}".format(tamanho_pacote))
                 len_body = len(package_received[1])
 
                 if numero_pacote != i or len_body != tamanho_pacote: #retorna um erro
                     print("Erro no pacote {0}".format(i))
-                    print("Pacote repetido ou com numeração incorreta")
+                    write_file("log.txt", "Erro no pacote {0}".format(i))
                     print("Enviando pacote com o numero para o cliente".format(numero_pacote))
+                    write_file("log.txt", "Enviando pacote com o numero para o cliente".format(numero_pacote))
                     error_head[5] = b'\x04'
                     error_head[6] = i.to_bytes(1, byteorder='little')
                     error_head[7] = (i-1).to_bytes(1, byteorder='little')
@@ -121,14 +129,15 @@ def main():
                     time.sleep(0.1)
                 else:
                     print("Pacote certo recebido")
+                    write_file("log.txt", "Pacote certo recebido")
                     comandos_recebidos.append(package_received[1])
                     comandos_recebidos.append("\n")
                     print("Enviando pacote enviando pacote com o numero para o cliente".format(numero_pacote))
+                    write_file("log.txt", "Enviando pacote enviando pacote com o numero para o cliente".format(numero_pacote))
                     ok_head[5] = [b'\x04']
                     ok_head[6] = (i).to_bytes(1, byteorder='little')
                     ok_head[7] = (i).to_bytes(1, byteorder='little')
                     ok_package = create_package(ok_head, b'\x00', end)
-                    print("ok:",ok_package)
                     send_package(com1, ok_package)
                     prosseguir = True
                     i += 1
@@ -137,9 +146,15 @@ def main():
         print("-------------------------")
         print("Comunicação encerrada")
         print("-------------------------")
+        write_file("log.txt", "-------------------------")
+        write_file("log.txt", "Comunicação encerrada")
+        write_file("log.txt", "-------------------------")
         com1.disable()
+        #Remove all ocorreces of '\n' in the list
+        comandos_recebidos = [x for x in comandos_recebidos if x != '\n']
         print("Comandos recebidos (Juntando os pacotes): ", comandos_recebidos)
-        
+        #Generate a log file
+        write_file("log.txt", "Comandos recebidos (Juntando os pacotes): {0}".format(comandos_recebidos))
     except Exception as erro:
         print("ops! :-\\")
         print(erro)
