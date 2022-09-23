@@ -1,0 +1,17 @@
+Fri Sep 23 17:10:47 2022: Lista: [b'\xfa', b'\x00\xfa\x00', b'\xfa', b'\x00\x00\xfa', b'\x00', b'\x00\x00\xfa\x00', b'\xfa\x00']
+Fri Sep 23 17:10:47 2022: Lista: [b'\x00', b'\x00', b'\x00\x00\xfa', b'\x00\xfa\x00\x00', b'\x00', b'\xfa\x00\x00', b'\xfa\x00\x00']
+Fri Sep 23 17:10:47 2022: n: 2
+Fri Sep 23 17:10:55 2022: Handshake recebido
+
+
+Fri Sep 23 17:10:55 2022: 
+Enviando pacote 1
+Fri Sep 23 17:10:55 2022: Enviando pacote: [b'\x03', b'\x00', b'\x00', b'\x02', b'\x01', b'\x0f', b'\x00', b'\x00', b'\x00', b'\x00', b'\xfa', b'\x00\xfa\x00', b'\xfa', b'\x00\x00\xfa', b'\x00', b'\x00\x00\xfa\x00', b'\xfa\x00', b'\xaa', b'\xbb', b'\xcc', b'\xdd']
+Fri Sep 23 17:10:57 2022: Recebeu a resposta: [b'\x04\x04\x00\x00\x00\x04\x01\x00\x00\x00', b'\x00\x00\x00\x00', b'\xaa\xbb\xcc\xdd', 10, 4, 4]
+
+Fri Sep 23 17:11:05 2022: 
+Enviando pacote 2
+Fri Sep 23 17:11:06 2022: Enviando pacote: [b'\x03', b'\x00', b'\x00', b'\x02', b'\x02', b'\x10', b'\x00', b'\x00', b'\x00', b'\x00', b'\x00', b'\x00', b'\x00\x00\xfa', b'\x00\xfa\x00\x00', b'\x00', b'\xfa\x00\x00', b'\xfa\x00\x00', b'\xaa', b'\xbb', b'\xcc', b'\xdd']
+Fri Sep 23 17:11:09 2022: 
+
+Fechando a comunicação, deu bom!

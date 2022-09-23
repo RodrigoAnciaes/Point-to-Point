@@ -1,0 +1,29 @@
+Fri Sep 23 17:04:44 2022: Lista: [b'\xfa', b'\x00\xfa', b'\xfa\x00', b'\xfa', b'\x00', b'\x00\xfa']
+Fri Sep 23 17:04:44 2022: Lista: [b'\x00\xfa\x00\x00', b'\xfa\x00\x00', b'\x00\xfa\x00', b'\x00\xfa\x00\x00', b'\x00\x00\xfa\x00']
+Fri Sep 23 17:04:44 2022: Lista: [b'\x00\xfa\x00\x00', b'\xfa', b'\xfa\x00\x00', b'\x00\xfa\x00', b'\x00\xfa\x00']
+Fri Sep 23 17:04:44 2022: Lista: [b'\x00\x00\xfa\x00', b'\xfa', b'\x00\xfa\x00', b'\x00\xfa', b'\xfa\x00\x00']
+Fri Sep 23 17:04:44 2022: Lista: [b'\x00\x00\xfa\x00', b'\x00\x00\xfa', b'\x00\x00\xfa\x00', b'\xfa', b'\xfa']
+Fri Sep 23 17:04:44 2022: n: 5
+Fri Sep 23 17:04:52 2022: Handshake recebido
+
+
+Fri Sep 23 17:04:52 2022: 
+Enviando pacote 1
+Fri Sep 23 17:04:52 2022: Enviando pacote: [b'\x03', b'\x00', b'\x00', b'\x05', b'\x01', b'\t', b'\x00', b'\x00', b'\x00', b'\x00', b'\xfa', b'\x00\xfa', b'\xfa\x00', b'\xfa', b'\x00', b'\x00\xfa', b'\xaa', b'\xbb', b'\xcc', b'\xdd']
+Fri Sep 23 17:04:54 2022: Recebeu a resposta: [b'\x04\x04\x00\x00\x00\x04\x01\x00\x00\x00', b'\x00\x00\x00\x00', b'\xaa\xbb\xcc\xdd', 10, 4, 4]
+
+Fri Sep 23 17:04:56 2022: 
+Enviando pacote 2
+Fri Sep 23 17:04:56 2022: Enviando pacote: [b'\x03', b'\x00', b'\x00', b'\x05', b'\x02', b'\x12', b'\x00', b'\x00', b'\x00', b'\x00', b'\x00\xfa\x00\x00', b'\xfa\x00\x00', b'\x00\xfa\x00', b'\x00\xfa\x00\x00', b'\x00\x00\xfa\x00', b'\xaa', b'\xbb', b'\xcc', b'\xdd']
+Fri Sep 23 17:05:01 2022: 
+Enviando pacote 3
+Fri Sep 23 17:05:01 2022: Enviando pacote: [b'\x03', b'\x00', b'\x00', b'\x05', b'\x03', b'\x0e', b'\x00', b'\x00', b'\x00', b'\x00', b'\x00\xfa\x00\x00', b'\xfa', b'\xfa\x00\x00', b'\x00\xfa\x00', b'\x00\xfa\x00', b'\xaa', b'\xbb', b'\xcc', b'\xdd']
+Fri Sep 23 17:05:05 2022: 
+Enviando pacote 4
+Fri Sep 23 17:05:05 2022: Enviando pacote: [b'\x03', b'\x00', b'\x00', b'\x05', b'\x04', b'\r', b'\x00', b'\x00', b'\x00', b'\x00', b'\x00\x00\xfa\x00', b'\xfa', b'\x00\xfa\x00', b'\x00\xfa', b'\xfa\x00\x00', b'\xaa', b'\xbb', b'\xcc', b'\xdd']
+Fri Sep 23 17:05:09 2022: 
+Enviando pacote 5
+Fri Sep 23 17:05:09 2022: Enviando pacote: [b'\x03', b'\x00', b'\x00', b'\x05', b'\x05', b'\r', b'\x00', b'\x00', b'\x00', b'\x00', b'\x00\x00\xfa\x00', b'\x00\x00\xfa', b'\x00\x00\xfa\x00', b'\xfa', b'\xfa', b'\xaa', b'\xbb', b'\xcc', b'\xdd']
+Fri Sep 23 17:05:13 2022: 
+
+Fechando a comunicação, deu bom!

@@ -1,0 +1,11 @@
+Fri Sep 23 17:06:30 2022: Lista: [b'\xfa\x00\x00', b'\x00\xfa', b'\x00\xfa', b'\xfa\x00', b'\x00\xfa', b'\x00\x00\xfa', b'\x00\xfa']
+Fri Sep 23 17:06:30 2022: Lista: [b'\x00\x00\xfa', b'\x00', b'\xfa\x00\x00', b'\xfa\x00\x00', b'\xfa\x00', b'\x00\xfa\x00', b'\x00']
+Fri Sep 23 17:06:30 2022: n: 2
+Fri Sep 23 17:06:37 2022: Handshake recebido
+
+
+Fri Sep 23 17:06:38 2022: 
+Enviando pacote 1
+Fri Sep 23 17:06:38 2022: Enviando pacote: [b'\x03', b'\x00', b'\x00', b'\x02', b'\x01', b'\x10', b'\x00', b'\x00', b'\x00', b'\x00', b'\xfa\x00\x00', b'\x00\xfa', b'\x00\xfa', b'\xfa\x00', b'\x00\xfa', b'\x00\x00\xfa', b'\x00\xfa', b'\xaa', b'\xbb', b'\xcc', b'\xdd']
+Fri Sep 23 17:06:40 2022: Recebeu a resposta: [b'\x04\x04\x00\x00\x00\x04\x02\x01\x00\x00', b'\x00\x00\x00\x00', b'\xaa\xbb\xcc\xdd', 10, 4, 4]
+
