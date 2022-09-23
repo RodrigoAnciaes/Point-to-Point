@@ -1,0 +1,20 @@
+Fri Sep 23 17:10:41 2022: Iniciou o main
+Fri Sep 23 17:10:47 2022: Esperando handshake
+Fri Sep 23 17:10:49 2022: Esperando handshake
+Fri Sep 23 17:10:49 2022: dado recebido
+Fri Sep 23 17:10:49 2022: Handshake recebido
+Fri Sep 23 17:10:50 2022: Handshake enviado
+Fri Sep 23 17:10:51 2022: Recebendo pacote 1 de 2
+Fri Sep 23 17:11:02 2022: Número do pacote recebido: 1
+Fri Sep 23 17:11:02 2022: Tamanho do pacote recebido: 15
+Fri Sep 23 17:11:02 2022: Pacote certo recebido
+Fri Sep 23 17:11:03 2022: Enviando pacote enviando pacote com o numero para o cliente
+Fri Sep 23 17:11:04 2022: Recebendo pacote 2 de 2
+Fri Sep 23 17:11:06 2022: Número do pacote recebido: 2
+Fri Sep 23 17:11:06 2022: Tamanho do pacote recebido: 16
+Fri Sep 23 17:11:07 2022: Pacote certo recebido
+Fri Sep 23 17:11:07 2022: Enviando pacote enviando pacote com o numero para o cliente
+Fri Sep 23 17:11:08 2022: -------------------------
+Fri Sep 23 17:11:08 2022: Comunicação encerrada
+Fri Sep 23 17:11:08 2022: -------------------------
+Fri Sep 23 17:11:09 2022: Comandos recebidos (Juntando os pacotes): [b'\xfa\x01\x0f\x00\x00\x00\x00\xfa\x00\xfa\x00\xfa\x00\x00\xfa', b'\x00\x00\x00\x00\xfa\x00\xfa\x00\x00\x00\xfa\x00\x00\xfa\x00\x00']

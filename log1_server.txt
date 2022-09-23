@@ -1,0 +1,34 @@
+Fri Sep 23 17:04:38 2022: Iniciou o main
+Fri Sep 23 17:04:44 2022: Esperando handshake
+Fri Sep 23 17:04:46 2022: dado recebido
+Fri Sep 23 17:04:46 2022: Handshake recebido
+Fri Sep 23 17:04:47 2022: Handshake enviado
+Fri Sep 23 17:04:49 2022: Recebendo pacote 1 de 5
+Fri Sep 23 17:04:53 2022: Número do pacote recebido: 1
+Fri Sep 23 17:04:53 2022: Tamanho do pacote recebido: 9
+Fri Sep 23 17:04:53 2022: Pacote certo recebido
+Fri Sep 23 17:04:53 2022: Enviando pacote enviando pacote com o numero para o cliente
+Fri Sep 23 17:04:55 2022: Recebendo pacote 2 de 5
+Fri Sep 23 17:04:57 2022: Número do pacote recebido: 2
+Fri Sep 23 17:04:57 2022: Tamanho do pacote recebido: 18
+Fri Sep 23 17:04:57 2022: Pacote certo recebido
+Fri Sep 23 17:04:58 2022: Enviando pacote enviando pacote com o numero para o cliente
+Fri Sep 23 17:04:59 2022: Recebendo pacote 3 de 5
+Fri Sep 23 17:05:01 2022: Número do pacote recebido: 3
+Fri Sep 23 17:05:02 2022: Tamanho do pacote recebido: 14
+Fri Sep 23 17:05:02 2022: Pacote certo recebido
+Fri Sep 23 17:05:02 2022: Enviando pacote enviando pacote com o numero para o cliente
+Fri Sep 23 17:05:03 2022: Recebendo pacote 4 de 5
+Fri Sep 23 17:05:06 2022: Número do pacote recebido: 4
+Fri Sep 23 17:05:06 2022: Tamanho do pacote recebido: 13
+Fri Sep 23 17:05:06 2022: Pacote certo recebido
+Fri Sep 23 17:05:06 2022: Enviando pacote enviando pacote com o numero para o cliente
+Fri Sep 23 17:05:07 2022: Recebendo pacote 5 de 5
+Fri Sep 23 17:05:10 2022: Número do pacote recebido: 5
+Fri Sep 23 17:05:10 2022: Tamanho do pacote recebido: 13
+Fri Sep 23 17:05:10 2022: Pacote certo recebido
+Fri Sep 23 17:05:10 2022: Enviando pacote enviando pacote com o numero para o cliente
+Fri Sep 23 17:05:11 2022: -------------------------
+Fri Sep 23 17:05:11 2022: Comunicação encerrada
+Fri Sep 23 17:05:12 2022: -------------------------
+Fri Sep 23 17:05:13 2022: Comandos recebidos (Juntando os pacotes): [b'\xfa\x00\xfa\xfa\x00\xfa\x00\x00\xfa', b'\x00\xfa\x00\x00\xfa\x00\x00\x00\xfa\x00\x00\xfa\x00\x00\x00\x00\xfa\x00', b'\x00\xfa\x00\x00\xfa\xfa\x00\x00\x00\xfa\x00\x00\xfa\x00', b'\x00\x00\xfa\x00\xfa\x00\xfa\x00\x00\xfa\xfa\x00\x00', b'\x00\x00\xfa\x00\x00\x00\xfa\x00\x00\xfa\x00\xfa\xfa']
