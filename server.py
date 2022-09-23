@@ -45,7 +45,6 @@ def main():
             #Se chegamos até aqui, a comunicação foi aberta com sucesso. Faça um print para informar.
             print("Esperando handshake")
         
-            #txBuffer = b'\xFA'  #isso é um array de bytes
             if com1.rx.getIsEmpty() == False:  
                 handshake_client =  get_separeted_package(com1)
                 time.sleep(0.1)
@@ -80,6 +79,7 @@ def main():
 
                 while recebido_com_sucesso == False:
                     print("loop")
+                    print(time.time() - timer2)
                     time.sleep(0.5)
                     if com1.rx.getIsEmpty() == False:
                         print("recebendo")

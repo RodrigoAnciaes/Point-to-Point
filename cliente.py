@@ -4,6 +4,7 @@
 #11/08/2022
 #Aplicação
 #####################################################
+from tkinter import N
 from enlace import *
 import time
 import numpy as np
@@ -75,7 +76,8 @@ def main():
         for i in lista_listas:
             print("Enviando pacote {0}".format(cont))
             
-            response = [[]]
+            response = [[None]*10]
+            response1 = [[None]*10]
             pacote_enviado_com_sucesso = False
             numero_certo = False
             while pacote_enviado_com_sucesso == False:
@@ -99,14 +101,13 @@ def main():
                 if com1.rx.getIsEmpty() == False:
                     response = get_separeted_package(com1) #ESSA DEVE SER A MSG T4 
                     print("Recebeu a resposta: {0}".format(response))
-                    if response[0][0] == 4: #DEVE SER USADO PARA CONFIRMAR SE O PACOTE FOI RECEBIDO COM SUCESSO
+                    if response[0][0] == 4 and response[0][7] == i: #DEVE SER USADO PARA CONFIRMAR SE O PACOTE FOI RECEBIDO COM SUCESSO
                         print("tudo certo")
                         print("response: ",response)
                         pacote_enviado_com_sucesso = True
                         numero_certo = True
                     elif response[0][0] == 6:
                         print("numero errado")
-                        print(response[0])
                         numero_certo = False
                 else:
                     print("????????????????? Não recebeu a resposta")
@@ -114,11 +115,10 @@ def main():
                 time.sleep(.5)
                 #LOOP PARA TRATAR ERROS 
                 while numero_certo == False:
-                    
+                    print("enrtou no loop de erros")
                     if time.time() - timer1 > 5:
                         print("Enviando comando novamente")
                         time.sleep(.1)
-                        print(i)
                         package = create_package(head, i, end)
                         print(package)
                         send_package(com1, package)
@@ -130,16 +130,27 @@ def main():
                         send_package(com1, package)
                         print("Timeout :-(")
                         com1.disable()
-                        break
+                        exit()
                     if com1.rx.getIsEmpty() == False:
                         response1 = get_separeted_package(com1)
+                        print("RESPOSE1: ",response1)
                     if response1[0][0] == 6:
-                        print("numero errado1")
+                        print("numero errado1", response1)
+                        print(response1[0][7], cont)
+                        #pode ir pro proximo?
                         package = create_package(head, i, end)
                         send_package(com1, package)
                         timer1 = time.time() 
                         timer2 = time.time()
-                        
+                    else:
+                        if response1[0][0] == 4:
+                            print("tudo certo1")
+                            print("response: ",response1)
+                            pacote_enviado_com_sucesso = True
+                            numero_certo = True
+                            break
+                    time.sleep(.2)
+
                 cont += 1
                 time.sleep(0.4)
             
