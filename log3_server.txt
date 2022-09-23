@@ -1,0 +1,7 @@
+Fri Sep 23 17:08:37 2022: Iniciou o main
+Fri Sep 23 17:08:41 2022: Esperando handshake
+Fri Sep 23 17:08:43 2022: dado recebido
+Fri Sep 23 17:08:43 2022: Handshake recebido
+Fri Sep 23 17:08:44 2022: Handshake enviado
+Fri Sep 23 17:08:45 2022: Recebendo pacote 1 de 5
+Fri Sep 23 17:09:07 2022: :-(
