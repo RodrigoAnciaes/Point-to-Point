@@ -78,9 +78,7 @@ def main():
                 recebido_com_sucesso = False
 
                 while recebido_com_sucesso == False:
-                    print("loop")
-                    print(time.time() - timer2)
-                    time.sleep(0.5)
+                    time.sleep(0.4)
                     if com1.rx.getIsEmpty() == False:
                         print("recebendo")
                         package_received = get_separeted_package(com1)
@@ -95,6 +93,7 @@ def main():
                             send_package(com1, package)
                             print(":-(")
                             com1.disable()
+                            exit()
                         if time.time() - timer1 > 2:
                             ok_head[5] = [b'\x04']
                             ok_head[6] = (i).to_bytes(1, byteorder='little')
